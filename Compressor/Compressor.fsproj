@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="compress.fs" />
     <Compile Include="compressor.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -38,21 +38,33 @@ let private collect_data_files path extension cutoff =
 
 // crude
 let private compress_file file remove_after =
-        let zip_path = $"{file}.gz"
+        let compressed_path = $"{file}.gz"
         use input_file_stream = File.OpenRead(file)
-        use output_file_stream = File.Create(zip_path)
-        use zip_stream = new GZipStream(output_file_stream, CompressionLevel.Optimal)
+        use output_file_stream = File.Create(compressed_path)
+        use gz_stream = new GZipStream(output_file_stream, CompressionLevel.Optimal)
+
+        let default_failure = {
+            Filename = file
+            Error = ""
+        }
+
         try
-            input_file_stream.CopyTo(zip_stream)
+            input_file_stream.CopyTo(gz_stream)
             match remove_after with
             | true -> File.Delete(file)
             | false -> ()
-            let bytes_saved = FileInfo(zip_path).Length
-            Success bytes_saved
+
+            let bytes_saved = FileInfo(compressed_path).Length
+            Success {
+                CompressedFilename = compressed_path
+                Removed = remove_after
+                BytesSaved = bytes_saved
+            }
+
         with
             | _ -> 
-                File.Delete(zip_path)
-                Failure $"Failed to compress and delete {file}."
+                File.Delete(compressed_path)
+                Failure { default_failure with Error = $"Failed to compress {file}" }
 
 // mock
 let private compress_file_mock file remove_after =
@@ -78,16 +90,7 @@ let compress_dir config =
             | Success s -> Some s
             | Failure f -> None
         )
-        |> Seq.fold (fun acc bytes -> (float bytes / 1_000_000.) + acc) 0.
-    // log the errors
-    let errors = 
-        results
-        |> Seq.choose (fun comp ->
-            match comp with
-            | Success _ -> None
-            | Failure s -> Some s
-        ) |> Seq.iter (fun error ->
-            printfn $"{error}")
+        |> Seq.fold (fun acc compressed -> (float compressed.BytesSaved / 1_000_000.) + acc) 0.
 
     ()
 
