@@ -1,4 +1,5 @@
 ﻿open Compressor.compressor
+open Compressor.compress
 open FSharp.SystemCommandLine
 open System.IO
 
@@ -22,7 +23,8 @@ let processDir (dir: string, extension: string, cutoff: int option, remove_after
             Cutoff = cutoff
             RemoveAfter = remove_after
         }
-        compress config
+        compress_dir config
+        0
     
 
 [<EntryPoint>]

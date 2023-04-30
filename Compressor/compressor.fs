@@ -5,6 +5,7 @@ open System
 open System.IO
 open System.IO.Compression
 open Compressor.compress
+open Microsoft.FSharp.Collections
 
 let compress = new CompressBuilder()
 
@@ -49,7 +50,9 @@ let private compress_file file remove_after =
             let bytes_saved = FileInfo(zip_path).Length
             Success bytes_saved
         with
-            | _ -> Failure "It just didn't work out this time, sorry bud."
+            | _ -> 
+                File.Delete(zip_path)
+                Failure $"Failed to compress and delete {file}."
 
 // mock
 let private compress_file_mock file remove_after =
@@ -58,14 +61,34 @@ let private compress_file_mock file remove_after =
     | false -> $"Compressed {file}"
         
 
-// crude
-let private process_directory (config : Configuration) =
+let compress_dir config =
     let files = collect_data_files config.Directory config.Extension config.Cutoff
-    files 
-    |> Seq.map (fun x -> compress {
-        let! result = compress_file x config.RemoveAfter
-        return result
-    })
+    let results = 
+        files 
+        |> Seq.map (fun x -> compress {
+            let! result = compress_file x config.RemoveAfter
+            return result
+        })
 
-let _compress config =
-    process_directory config
+    // collect bytes saved
+    let saved = 
+        results 
+        |> Seq.choose (fun comp ->
+            match comp with
+            | Success s -> Some s
+            | Failure f -> None
+        )
+        |> Seq.fold (fun acc bytes -> (float bytes / 1_000_000.) + acc) 0.
+    // log the errors
+    let errors = 
+        results
+        |> Seq.choose (fun comp ->
+            match comp with
+            | Success _ -> None
+            | Failure s -> Some s
+        ) |> Seq.iter (fun error ->
+            printfn $"{error}")
+
+    ()
+
+

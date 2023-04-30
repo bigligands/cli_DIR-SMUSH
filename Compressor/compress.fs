@@ -15,7 +15,6 @@ type CompressBuilder() =
             to_mapped b
     member this.Return(bytes) = Success bytes
     member this.RetrunFrom(m) = m
-    member this.Zero() = Failure ""
 
 type Configuration = {
     Directory : string
