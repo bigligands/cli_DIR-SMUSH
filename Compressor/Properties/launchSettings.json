@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Compressor": {
+      "commandName": "Project",
+      "commandLineArgs": "c:\\users\\jcraw\\rust_projects -e rs --remove"
+    }
+  }
+}

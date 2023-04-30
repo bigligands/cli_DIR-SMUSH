@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Compressor", "Compressor\Compressor.fsproj", "{AA242823-F36E-490C-A4EE-D8D90A331DB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA242823-F36E-490C-A4EE-D8D90A331DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA242823-F36E-490C-A4EE-D8D90A331DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA242823-F36E-490C-A4EE-D8D90A331DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA242823-F36E-490C-A4EE-D8D90A331DB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD39FB38-EFAA-4139-8324-67D8A900A556}
+	EndGlobalSection
+EndGlobal
