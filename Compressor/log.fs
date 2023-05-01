@@ -1,5 +1,4 @@
 ﻿module Compressor.log
-
 open System.Data.SQLite
 open Compressor.types
 
@@ -29,13 +28,17 @@ let upload_error (err : FailedFile) =
         INSERT INTO [errorlog] ([date], [filename], [error]) VALUES ('{err.Date}', '{err.Filename}', '{err.Error}')
         "
     use command = new SQLiteCommand(query, connection)
-    printfn $"{command.CommandText}"
     command.ExecuteNonQuery() |> ignore
 
 let retrieve_total_saved () =
     use connection = new SQLiteConnection(conn_string)
     connection.Open()
-    let query = @"SELECT SUM([bytes_saved] / 1000000) AS [mb_saved] FROM [savelog]"
+    let query = @"SELECT SUM([bytes_saved] / 1000000.0) AS [mb_saved] FROM [savelog]"
     use command = new SQLiteCommand(query, connection)
     let reader = command.ExecuteReader()
-    reader.GetFloat(0)
+
+    if reader.Read() then
+        let saved = reader.GetDouble(0)
+        saved
+    else
+        0.

@@ -29,7 +29,9 @@ let processDir (dir: string, extension: string, cutoff: int option, remove_after
         printfn $"Remove after? : {config.RemoveAfter}"
 
         let saved = compress_dir config
-        printfn $"compressed {saved}"
+        printfn $"compressed {saved} megabytes!"
+        if not config.RemoveAfter then
+            printfn "be sure to delete original files to realize space savings!"
         0
     
 

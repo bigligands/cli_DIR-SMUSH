@@ -2,7 +2,7 @@
   "profiles": {
     "Compressor": {
       "commandName": "Project",
-      "commandLineArgs": "c:\\users\\jcraw\\rust_projects_test -e rs -r"
+      "commandLineArgs": "c:\\users\\jcraw\\udemy_test -e ipynb"
     }
   }
 }
