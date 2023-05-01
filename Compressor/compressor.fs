@@ -1,10 +1,10 @@
 ﻿module Compressor.compressor
 
-open System.Diagnostics
 open System
 open System.IO
 open System.IO.Compression
 open Compressor.compress
+open Compressor.types
 open Microsoft.FSharp.Collections
 
 let compress = new CompressBuilder()
@@ -71,11 +71,6 @@ let compress_dir config =
                 let! result = compress_file file config.RemoveAfter
                 return result
             })
-        //compress {
-        //    let cs = files |> Seq.map (fun file -> compress_file file config.RemoveAfter)
-        //    for file in cs do
-        //        return file
-        //}
 
     let saved = 
         results 
