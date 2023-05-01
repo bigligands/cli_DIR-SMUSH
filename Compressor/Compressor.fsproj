@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include=".db\save_log.db">
+    <EmbeddedResource Include=".db\save_log.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </EmbeddedResource>
     <Compile Include="types.fs" />
     <Compile Include="log.fs" />
     <Compile Include="compress.fs" />

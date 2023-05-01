@@ -45,12 +45,18 @@ let private compress_file file remove_after =
 
         try
             input_file_stream.CopyTo(gz_stream)
+            input_file_stream.Flush()
+            input_file_stream.Close()
+            gz_stream.Flush() // need to flush to get the size
+            gz_stream.Close()
             match remove_after with
             | true -> File.Delete(file)
             | false -> ()
 
             let bytes_saved = FileInfo(compressed_path).Length
+            printfn $"bytes_saved : {bytes_saved}"
             Success {
+                Date = DateTime.Now
                 CompressedFilename = compressed_path
                 Removed = remove_after
                 BytesSaved = bytes_saved
@@ -59,7 +65,7 @@ let private compress_file file remove_after =
         with
             | _ as ex -> 
                 File.Delete(compressed_path)
-                Failure { Filename = file; Error = $"Failed to compress {file} : {ex.Message}" }
+                Failure { Date = DateTime.Now; Filename = file; Error = $"Failed to compress {file} : {ex.Message}" }
 
 
 let compress_dir config =
@@ -72,13 +78,13 @@ let compress_dir config =
                 return result
             })
 
-    let saved = 
+    let mb_saved = 
         results 
         |> Seq.choose (fun comp ->
             match comp with
             | Success s -> Some s
-            | Failure f -> None
+            | Failure _ -> None
         )
         |> Seq.fold (fun acc compressed -> (float compressed.BytesSaved / 1_000_000.) + acc) 0.
 
-    ()
+    mb_saved

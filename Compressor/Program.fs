@@ -9,7 +9,7 @@ let processDir (dir: string, extension: string, cutoff: int option, remove_after
         printfn $"{dir} Not recognized as a valid directory!"
         1
     else
-        let cutoff = defaultArg cutoff 90
+        let cutoff = defaultArg cutoff 0
         let remove_after = defaultArg remove_after false
 
         let ext =
@@ -23,7 +23,13 @@ let processDir (dir: string, extension: string, cutoff: int option, remove_after
             Cutoff = cutoff
             RemoveAfter = remove_after
         }
-        compress_dir config
+        printfn $"Compressing : {config.Directory}"
+        printfn $"Looking for extension : {config.Extension}"
+        printfn $"Cutoff : {config.Cutoff} days"
+        printfn $"Remove after? : {config.RemoveAfter}"
+
+        let saved = compress_dir config
+        printfn $"compressed {saved}"
         0
     
 

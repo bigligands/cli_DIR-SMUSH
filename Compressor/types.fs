@@ -1,12 +1,16 @@
 ﻿module Compressor.types
 
+open System
+
 type CompressedFile = {
+    Date : DateTime
     CompressedFilename : string
     Removed : bool
     BytesSaved : int64
 }
 
 type FailedFile = {
+    Date: DateTime
     Filename : string
     Error : string
 }
