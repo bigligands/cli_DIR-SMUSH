@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="types.fs" />
+    <Compile Include="log.fs" />
     <Compile Include="compress.fs" />
     <Compile Include="compressor.fs" />
     <Compile Include="Program.fs" />
@@ -14,6 +16,11 @@
   <ItemGroup>
     <PackageReference Include="FSharp.SystemCommandLine" Version="0.17.0-beta4" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include=".db\" />
   </ItemGroup>
 
 </Project>

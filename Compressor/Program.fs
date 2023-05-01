@@ -1,5 +1,5 @@
 ﻿open Compressor.compressor
-open Compressor.compress
+open Compressor.types
 open FSharp.SystemCommandLine
 open System.IO
 

@@ -43,11 +43,6 @@ let private compress_file file remove_after =
         use output_file_stream = File.Create(compressed_path)
         use gz_stream = new GZipStream(output_file_stream, CompressionLevel.Optimal)
 
-        let default_failure = {
-            Filename = file
-            Error = ""
-        }
-
         try
             input_file_stream.CopyTo(gz_stream)
             match remove_after with
@@ -62,27 +57,26 @@ let private compress_file file remove_after =
             }
 
         with
-            | _ -> 
+            | _ as ex -> 
                 File.Delete(compressed_path)
-                Failure { default_failure with Error = $"Failed to compress {file}" }
+                Failure { Filename = file; Error = $"Failed to compress {file} : {ex.Message}" }
 
-// mock
-let private compress_file_mock file remove_after =
-    match remove_after with
-    | true -> $"Compressed and removed {file}"
-    | false -> $"Compressed {file}"
-        
 
 let compress_dir config =
     let files = collect_data_files config.Directory config.Extension config.Cutoff
     let results = 
         files 
-        |> Seq.map (fun x -> compress {
-            let! result = compress_file x config.RemoveAfter
-            return result
-        })
+        |> Seq.map (fun file -> 
+            compress {
+                let! result = compress_file file config.RemoveAfter
+                return result
+            })
+        //compress {
+        //    let cs = files |> Seq.map (fun file -> compress_file file config.RemoveAfter)
+        //    for file in cs do
+        //        return file
+        //}
 
-    // collect bytes saved
     let saved = 
         results 
         |> Seq.choose (fun comp ->
@@ -93,5 +87,3 @@ let compress_dir config =
         |> Seq.fold (fun acc compressed -> (float compressed.BytesSaved / 1_000_000.) + acc) 0.
 
     ()
-
-
