@@ -1,4 +1,5 @@
 ﻿module Compressor.compress
+
 open Compressor.types
 open Compressor.log
 
@@ -10,6 +11,7 @@ let log_bytes (compressed) =
     printfn $"Compressed into {compressed.CompressedFilename}."
     upload_compressed_file compressed
 
+// This is just to learn about Computation Expressions
 type CompressBuilder() =
     member this.Bind(mapped, to_mapped) =
         match mapped with
@@ -19,8 +21,4 @@ type CompressBuilder() =
         | Success b ->
             log_bytes b
             to_mapped b
-    //member this.For(s, f) =
-    //    this.Bind(s, f)
     member this.Return(bytes) = Success bytes
-
-

@@ -31,9 +31,9 @@ let compress_command =
             printfn $"Remove after? : {config.RemoveAfter}"
 
             let saved = compress_dir config
-            printfn $"compressed {saved} megabytes!"
+            printfn $"Compressed {saved} megabytes!"
             if not config.RemoveAfter then
-                printfn "be sure to delete original files to realize space savings!"
+                printfn "Be sure to delete original files to realize space savings!"
 
     let dir= Input.Argument<string>("The Directory to compress.")
     let extension = Input.Option<string>(["--extension"; "-e"], "The file extension for files desired to be compressed")
@@ -57,7 +57,7 @@ let stats_command =
             printfn $"{error_count} total errors logged using this tool! Sheesh."
         else
             let mb_saved = retrieve_total_saved ()
-            printfn $"Compressed {mb_saved} megabytes in using this tool! Wow."
+            printfn $"Compressed {mb_saved} megabytes using this tool! Wow."
 
     let errors = Input.OptionMaybe(["--errors"], "How many total compression failures logged.")
 

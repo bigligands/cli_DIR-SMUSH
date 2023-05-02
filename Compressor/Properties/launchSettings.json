@@ -2,7 +2,7 @@
   "profiles": {
     "Compressor": {
       "commandName": "Project",
-      "commandLineArgs": "stats --errors"
+      "commandLineArgs": "stats"
     }
   }
 }

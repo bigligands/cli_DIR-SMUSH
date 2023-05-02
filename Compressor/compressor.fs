@@ -3,7 +3,6 @@
 open System
 open System.IO
 open System.IO.Compression
-open Compressor.log
 open Compressor.compress
 open Compressor.types
 open Microsoft.FSharp.Collections
@@ -37,7 +36,6 @@ let private collect_data_files path extension cutoff =
     walk_directory path
 
 
-// crude
 let private compress_file file remove_after =
         let compressed_path = $"{file}.gz"
         if File.Exists(compressed_path) then
@@ -50,14 +48,11 @@ let private compress_file file remove_after =
             try
                 input_file_stream.CopyTo(gz_stream)
                 input_file_stream.Flush()
-                input_file_stream.Close()
                 gz_stream.Flush() // need to flush to get the size
-                gz_stream.Close()
                 match remove_after with
                 | true -> File.Delete(file)
                 | false -> ()
                 let bytes_saved = FileInfo(compressed_path).Length
-                printfn $"bytes_saved : {bytes_saved}"
                 Success {
                     Date = DateTime.Now
                     CompressedFilename = compressed_path

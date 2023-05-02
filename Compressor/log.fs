@@ -1,4 +1,5 @@
 ﻿module Compressor.log
+
 open System.Data.SQLite
 open Compressor.types
 
