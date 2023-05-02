@@ -42,3 +42,16 @@ let retrieve_total_saved () =
         saved
     else
         0.
+
+let retrieve_error_count () =
+    use connection = new SQLiteConnection(conn_string)
+    connection.Open()
+    let query = @"SELECT COUNT(*) AS [Errors] FROM [errorlog]"
+    use command = new SQLiteCommand(query, connection)
+    let reader = command.ExecuteReader()
+
+    if reader.Read() then
+        let saved = reader.GetInt32(0)
+        saved
+    else
+        0
